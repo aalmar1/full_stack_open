@@ -7,17 +7,35 @@ const Button = (props) => (
     {props.text}
   </button>
 )
-const Stats = ({grade, amount}) => (<p>{grade},{amount}</p>)
+const StatisticLine = ({grade, amount}) => (<p>{grade},{amount}</p>)
+
+const Statistics = ({good, neutral, bad}) => {
+  const all = good + bad + neutral
+  const average = (good - bad) / all
+  const positive = (good / all) * 100 + '%'
+
+  if (all === 0 ) {
+    return <p>No feedback given</p>
+  }
+  return (
+    <div>
+      <StatisticLine grade="good" amount={good}/>    
+      <StatisticLine grade="neutral" amount={neutral}/>
+      <StatisticLine grade="bad" amount={bad}/>
+      <StatisticLine grade="all" amount={all}/>
+      <StatisticLine grade="average" amount={average}/>
+      <StatisticLine grade="positive" amount={positive}/>
+    </div>
+  )
+
+  
+}
 
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const all = good + bad + neutral
-  const average = (good - bad) / all
-  const positive = (good / all) * 100 + '%'
-
 
   const handleGood = () => setGood(good + 1)
 
@@ -33,12 +51,7 @@ const App = () => {
       <Button text="bad" handleClick={handleBad}/>
       <Button text="neutral" handleClick={handleNeutral}/>
       <Header text="Stats"/>
-      <Stats grade="good" amount={good}/>
-      <Stats grade="neutral" amount={neutral}/>
-      <Stats grade="bad" amount={bad}/>
-      <Stats grade="all" amount={all}/>
-      <Stats grade="average" amount={average}/>
-      <Stats grade="positive" amount={positive}/>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
